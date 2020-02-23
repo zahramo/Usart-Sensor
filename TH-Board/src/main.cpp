@@ -41,7 +41,6 @@ void loop()
   Wire.write(0xF3);  
   // Stop I2C transmission  
   Wire.endTransmission();  
-  delay(500);
   // Request 2 bytes of data  
   Wire.requestFrom(Addr, 2);
   // Read 2 bytes of data  
@@ -54,7 +53,9 @@ void loop()
   float cTemp = (((data[0] * 256.0 + data[1]) * 175.72) / 65536.0) - 46.85;    
   // Output data to Serial Monitor  
   byte* tempBytes = (byte*) &cTemp;
-  Serial.write("**");    
-  Serial.write(tempBytes, 4);  
+  Serial.write("*");    
+  Serial.write(tempBytes, 4);
+  Serial.write("@");
+  delay(100);
   }  
 }

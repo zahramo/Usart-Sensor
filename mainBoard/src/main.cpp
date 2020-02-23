@@ -11,6 +11,14 @@ float datas[2];
 AltSoftSerial altSerial;
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
+typedef union{
+  float fp;
+  byte bin[4];
+} FloatBytes;
+
+FloatBytes humidity;
+FloatBytes temp;
+
 float getDataFromLightBoard(){
   float lux = 0;
   if (Serial.available() >= 4) {
@@ -20,27 +28,45 @@ float getDataFromLightBoard(){
 
 }
 
-// void getDataFromThBoard(){
-//   char c;
-//   int i=0;
-//   int status = 0; // 0: initial, 1: humidity, 2: temperature
-//   Serial.println("we are here out of while");
-//   while(altSerial.available()) {
-//     Serial.println("we are here");
-//     c = altSerial.read();
-//   }
-//   // floatBytes bn;
-//   // char c= '!';
-//   // int i = 0;
-//   // while(altSerial.available() && c != '#')
-//   // { 
-//   //   c = altSerial.read();
-//   //   bn.binary[i++] = c;
-//   //   Serial.println(bn.binary[i]);
-//   // }
-//   // Serial.println(bn.fb);
-//   // return bn.fb;
-// }
+void getDataFromThBoard(){
+  char c;
+  int i = 0;
+  int status = 0; // 0: initial, 1: humidity, 2: temperature
+  Serial.println("we are here out of while");
+  if (altSerial.available() >= 11) {
+    while (1){
+      c = altSerial.read();
+      // Serial.print(c);
+      if (c == '#') {
+        status = 1;
+        continue;
+      }
+      else if ((c == '*') && (status == 1)){
+        status = 2;
+        continue;
+      }
+      else if (c == '@')
+        break;
+      if (status == 1) {
+        humidity.bin[i++] = c;
+      }
+      else if (status == 2){
+        temp.bin[i++] = c;
+      }
+    }
+  }
+  // floatBytes bn;
+  // char c= '!';
+  // int i = 0;
+  // while(altSerial.available() && c != '#')
+  // { 
+  //   c = altSerial.read();
+  //   bn.binary[i++] = c;
+  //   Serial.println(bn.binary[i]);
+  // }
+  // Serial.println(bn.fb);
+  // return bn.fb;
+}
 
 void printResponseInLcd(float humidity, float temp, float lux) {
   if (humidity > 80) {
@@ -74,10 +100,15 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   float lux = getDataFromLightBoard();
+  getDataFromThBoard();
+  Serial.print("hum: ");
+  Serial.println(humidity.fp);
+  Serial.print("tmp: ");
+  Serial.println(temp.fp);
   // float humidity = datas[0];
   // float temperature = datas[1];
-  Serial.print("lux: ");
-  Serial.println(lux);
+  // Serial.print("lux: ");
+  // Serial.println(lux);
   // getDataFromThBoard();
   // Serial.print("humidity: ");
   // Serial.println(humidity);
