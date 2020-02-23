@@ -18,8 +18,7 @@ void loop() {
   // Serial.write(luxStr.c_str(), luxStr.length());
 
 
-  byte* luxBytes = (byte*) &lux;
-  Serial.write(luxBytes, 4);
+  Serial.println(lux);
 
-  delay(1000);
+  delay(100);
 }
