@@ -39,10 +39,12 @@ void getDataFromThBoard(){
       // Serial.print(c);
       if (c == '#') {
         status = 1;
+        i = 0;
         continue;
       }
-      else if ((c == '*') && (status == 1)){
+      else if (c == '*'){
         status = 2;
+        i = 0;
         continue;
       }
       else if (c == '@')
@@ -55,36 +57,25 @@ void getDataFromThBoard(){
       }
     }
   }
-  // floatBytes bn;
-  // char c= '!';
-  // int i = 0;
-  // while(altSerial.available() && c != '#')
-  // { 
-  //   c = altSerial.read();
-  //   bn.binary[i++] = c;
-  //   Serial.println(bn.binary[i]);
-  // }
-  // Serial.println(bn.fb);
-  // return bn.fb;
 }
 
 void printResponseInLcd(float humidity, float temp, float lux) {
   if (humidity > 80) {
-    lcd.print("Abyari soorat nagirad");
+    lcd.print("no watering");
   }
   else if (humidity > 50){
     if (temp <= 25) {
       if (lux < 600)
-        lcd.print("Abyari ba nerkhe 10 ghatre/min");
+        lcd.print("10 drop/min");
       else if (lux >= 600)
-        lcd.print("Abyari ba nerkhe 5 ghatre/min");
+        lcd.print("5 drop/min");
     }
     else {
-      lcd.print("Abyari ba nerkhe 10 ghatre/min");
+      lcd.print("10 drop/min");
     }
   }
   else {
-    lcd.print("Abyari ba nerkhe 15cc/min");  
+    lcd.print("15 cc/min");  
   }
 }
 
@@ -101,20 +92,22 @@ void loop() {
   // put your main code here, to run repeatedly:
   float lux = getDataFromLightBoard();
   getDataFromThBoard();
-  Serial.print("hum: ");
-  Serial.println(humidity.fp);
-  Serial.print("tmp: ");
-  Serial.println(temp.fp);
-  // float humidity = datas[0];
-  // float temperature = datas[1];
-  // Serial.print("lux: ");
-  // Serial.println(lux);
-  // getDataFromThBoard();
-  // Serial.print("humidity: ");
-  // Serial.println(humidity);
-  // Serial.print("temp: ");
-  // Serial.println(temperature);
-  // lcd.print(response);
-  // printResponseInLcd(humidity, temperature, lux);
+  // Serial.print("hum: ");
+  // Serial.println(humidity.fp);
+  // Serial.print("tmp: ");
+  // Serial.println(temp.fp);
+  lcd.setCursor(0, 0);
+  lcd.print("hum: ");
+  lcd.print(humidity.fp);
+  lcd.setCursor(0, 1);
+  lcd.print("tmp: ");
+  lcd.print(temp.fp);
+  lcd.setCursor(0, 2);
+  lcd.print("lux: ");
+  lcd.print(lux);
+  lcd.setCursor(0, 3);
+  lcd.print("water: ");
+  printResponseInLcd(humidity.fp, temp.fp, lux);  
   delay(100);
+  lcd.clear();
 }

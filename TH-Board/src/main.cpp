@@ -47,15 +47,15 @@ void loop()
   // temp msb, temp lsb  
   if(Wire.available() == 2)  
   {    
-  data[0] = Wire.read();    
-  data[1] = Wire.read();
-  // Convert the data    
-  float cTemp = (((data[0] * 256.0 + data[1]) * 175.72) / 65536.0) - 46.85;    
-  // Output data to Serial Monitor  
-  byte* tempBytes = (byte*) &cTemp;
-  Serial.write("*");    
-  Serial.write(tempBytes, 4);
+    data[0] = Wire.read();    
+    data[1] = Wire.read();
+    // Convert the data    
+    float cTemp = (((data[0] * 256.0 + data[1]) * 175.72) / 65536.0) - 46.85;    
+    // Output data to Serial Monitor  
+    byte* tempBytes = (byte*) &cTemp;
+    Serial.write("*");    
+    Serial.write(tempBytes, 4);
+  }  
   Serial.write("@");
   delay(100);
-  }  
 }
