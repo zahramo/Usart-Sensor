@@ -25,19 +25,15 @@ float getDataFromLightBoard(){
     lux = Serial.parseFloat();
   } 
   return lux;
-
 }
 
 void getDataFromThBoard(){
   char c;
   int i = 0;
   int status = 0; // 0: initial, 1: humidity, 2: temperature
-  Serial.println(altSerial.available());
   if (altSerial.available() >= 11) {
-    Serial.println("in hello");
     while (1){
       c = altSerial.read();
-      // Serial.print(c);
       if (c == '#') {
         status = 1;
         i = 0;
@@ -90,13 +86,8 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   float lux = getDataFromLightBoard();
   getDataFromThBoard();
-  // Serial.print("hum: ");
-  // Serial.println(humidity.fp);
-  // Serial.print("tmp: ");
-  // Serial.println(temp.fp);
   lcd.setCursor(0, 0);
   lcd.print("hum: ");
   lcd.print(humidity.fp);

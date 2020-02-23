@@ -13,11 +13,6 @@ void loop() {
 
   lux=(250.000000/(ADC_value*LDR_value))-50.000000;
 
-  // String luxStr = String(lux);
-
-  // Serial.write(luxStr.c_str(), luxStr.length());
-
-
   Serial.println(lux);
 
   delay(300);
