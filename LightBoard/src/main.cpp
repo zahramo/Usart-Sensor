@@ -20,5 +20,5 @@ void loop() {
 
   Serial.println(lux);
 
-  delay(100);
+  delay(300);
 }

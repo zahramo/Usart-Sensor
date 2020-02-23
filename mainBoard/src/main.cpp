@@ -32,8 +32,9 @@ void getDataFromThBoard(){
   char c;
   int i = 0;
   int status = 0; // 0: initial, 1: humidity, 2: temperature
-  Serial.println("we are here out of while");
+  Serial.println(altSerial.available());
   if (altSerial.available() >= 11) {
+    Serial.println("in hello");
     while (1){
       c = altSerial.read();
       // Serial.print(c);
@@ -106,8 +107,8 @@ void loop() {
   lcd.print("lux: ");
   lcd.print(lux);
   lcd.setCursor(0, 3);
-  lcd.print("water: ");
+  lcd.print("** ");
   printResponseInLcd(humidity.fp, temp.fp, lux);  
-  delay(100);
+  delay(300);
   lcd.clear();
 }
